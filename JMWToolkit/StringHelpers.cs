@@ -14,8 +14,8 @@ public static class StringHelpers
         return string.Format(string_format, args);
     }
 
-    public static string LoadStringResource(string resource)
+    public static string LoadStringResource(string resourceId)
     {
-        return (string)Application.Current.FindResource(resource);
+        return (string)Application.Current.FindResource(resourceId);
     }
 }
