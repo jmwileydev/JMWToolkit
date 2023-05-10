@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace JMWToolkit;
+﻿namespace JMWToolkit;
 
 /// <summary>
 /// Static StringHelpers. I am sure this class will grow over time. For now two simple
@@ -8,14 +6,6 @@ namespace JMWToolkit;
 /// </summary>
 public static class StringHelpers
 {
-    public static string LoadAndFormatResource(string format, params object[] args)
-    {
-        var string_format = (string)Application.Current.FindResource(format);
-        return string.Format(string_format, args);
-    }
-
-    public static string LoadStringResource(string resourceId)
-    {
-        return (string)Application.Current.FindResource(resourceId);
-    }
+    // The only methods here relied on WPF so I have moved them to JMWToolkit.MVVM. I am
+    // keeping this file because I will be adding methods to it.
 }

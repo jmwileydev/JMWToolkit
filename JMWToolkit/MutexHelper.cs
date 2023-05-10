@@ -25,14 +25,59 @@ namespace JMWToolkit;
 /// </summary>
 public class MutexHelper : IDisposable
 {
+
     private readonly Mutex _mutex;
     private bool _ownsMutex;
     private bool disposedValue = false;
 
-    public MutexHelper(Mutex mutex)
+    public MutexHelper(Mutex mutex, bool wait = true)
     {
         _mutex = mutex;
+
+        if (wait)
+        {
+            _ownsMutex = Wait();
+        }
+    }
+
+    public MutexHelper(Mutex mutex, TimeSpan timeout)
+    {
+        _mutex = mutex;
+        Wait(timeout);
+    }
+
+    public bool Wait()
+    {
+        if (_ownsMutex)
+        {
+            throw new InvalidOperationException("MutexHelper already owns the mutex");
+        }
+
         _ownsMutex = _mutex.WaitOne();
+        
+        return _ownsMutex;
+    }
+
+    public bool Wait(TimeSpan timeout)
+    {
+        if (_ownsMutex)
+        {
+            throw new InvalidOperationException("MutexHelper already owns the mutex");
+        }
+
+        _ownsMutex = _mutex.WaitOne(timeout);
+
+        return _ownsMutex; ;
+    }
+
+    public void Release()
+    {
+        if (!_ownsMutex)
+        {
+            throw new InvalidOperationException("MutexHelper already owns the mutex");
+        }
+
+        _mutex.Dispose();
     }
 
     protected virtual void Dispose(bool disposing)
