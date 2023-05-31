@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/jmwileydev/JMWToolkit</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jmwileydev/JMWToolkit</RepositoryUrl>
     <SignAssembly>false</SignAssembly>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
     <Title>JMWToolkit Dot Net Helpers</Title>
     <License>BSD-2-Clause</License>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
