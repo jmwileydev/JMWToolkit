@@ -1,14 +1,6 @@
-﻿/*
- * Copyright (c) 2023, jmwileydev@gmail.com
-All rights reserved.
-
-This source code is licensed under the BSD-style license found in the
-LICENSE file in the root directory of this source tree. 
-*/
-using System;
+﻿using System;
 using System.Threading;
 
-namespace JMWToolkit;
 
 /// <summary>
 /// This class is used to help with making sure ReleaseMutex is called when the scope of
@@ -25,7 +17,6 @@ namespace JMWToolkit;
 /// </summary>
 public class MutexHelper : IDisposable
 {
-
     private readonly Mutex _mutex;
     private bool _ownsMutex;
     private bool disposedValue = false;
@@ -77,7 +68,8 @@ public class MutexHelper : IDisposable
             throw new InvalidOperationException("MutexHelper already owns the mutex");
         }
 
-        _mutex.Dispose();
+        _ownsMutex = false;
+        _mutex.ReleaseMutex();
     }
 
     protected virtual void Dispose(bool disposing)

@@ -1,11 +1,11 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33513.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JMWToolkit", "JMWToolkit.csproj", "{DD5E7976-1758-4BA0-8805-BE87DA882582}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMWToolkit.Tests", "..\JMWToolkit.Tests\JMWToolkit.Tests.csproj", "{C4DC460B-3CE6-4EDC-8DF6-97F80367095D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JMWToolkit.Tests", "..\JMWToolkit.Tests\JMWToolkit.Tests.csproj", "{C4DC460B-3CE6-4EDC-8DF6-97F80367095D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
