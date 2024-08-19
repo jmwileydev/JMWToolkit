@@ -53,6 +53,17 @@ public class AsyncLockHelper : IDisposable
         return _ownsLock;
     }
 
+    public void Release()
+    {
+        if (!_ownsLock)
+        {
+            throw new InvalidOperationException("Release cannot be called if the lock is not owned.");
+        }
+
+        _ownsLock = false;
+        _asyncLock.Release();
+    }
+
     protected virtual void Dispose(bool disposing)
     {
         if (!disposedValue)
