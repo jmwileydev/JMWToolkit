@@ -31,7 +31,8 @@ public class AsyncLock
 
         while (!lockObtained)
         {
-            // Try and get the mutex, if we cannot then go back to waiting for the 
+            // Try and get the mutex, if we cannot then go back to waiting for it to
+            // be released.
             if (helper.Wait(TimeSpan.Zero))
             {
                 if (!_lockIsHeld)
