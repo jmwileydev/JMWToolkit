@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/jmwileydev/JMWToolkit</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jmwileydev/JMWToolkit</RepositoryUrl>
     <SignAssembly>false</SignAssembly>
-    <Version>1.0.8</Version>
+    <Version>1.0.10</Version>
     <Title>JMWToolkit Dot Net Helpers</Title>
     <License>BSD-2-Clause</License>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -31,11 +31,10 @@
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="\" />
     <None Include="..\LICENSE" Pack="true" PackagePath="" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.421302">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.1" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.2" />
   </ItemGroup>
 </Project>

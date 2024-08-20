@@ -1,12 +1,5 @@
-﻿/*
- * Copyright (c) 2023, jmwileydev@gmail.com
-All rights reserved.
-
-This source code is licensed under the BSD-style license found in the
-LICENSE file in the root directory of this source tree. 
-*/
-using System;
-using System.ServiceModel.Channels;
+﻿using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace JMWToolkit;
@@ -23,15 +16,24 @@ public class AsyncLock
     private bool _lockIsHeld = false;
     private readonly TimeSpan _infiniteWait = new(0, 0, 0, 0, -1);
 
+    public AsyncLock(bool initiallyLocked = false)
+    {
+        if (initiallyLocked)
+        {
+            _lockIsHeld = true;
+        }
+    }
+
     public bool Wait()
     {
         bool lockObtained = false;
-
         using MutexHelper helper = new(_mutex, false);
 
         while (!lockObtained)
         {
-            helper.Wait();
+            // Try and get the mutex, if we cannot then go back to waiting for it to
+            // be released.
+            if (helper.Wait(TimeSpan.Zero))
             {
                 if (!_lockIsHeld)
                 {
@@ -39,6 +41,8 @@ public class AsyncLock
                     lockObtained = true;
                     break;
                 }
+
+                helper.Release();
             }
 
             // If we get here then the mutex is held and we need to wait for it to be
@@ -62,25 +66,24 @@ public class AsyncLock
                 "Negative timeout's are not allowed as a Wait time, unless it is -1 which implies Infinite");
         }
 
-        var startTime = DateTime.Now;
-        using MutexHelper mutexHelper = new(_mutex, false);
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
+        using MutexHelper helper = new(_mutex, false);
+
         do
         {
-            bool ownsMutex = false;
-
-            ownsMutex = mutexHelper.Wait(timeout);
-            if (!ownsMutex)
+            if (helper.Wait(TimeSpan.Zero))
             {
-                return false;
+                if (!_lockIsHeld)
+                {
+                    _lockIsHeld = true;
+                    return true;
+                }
             }
 
-            if (!_lockIsHeld)
-            {
-                _lockIsHeld = true;
-                return true;
-            }
+            helper.Release();
 
-            timeout -= (DateTime.Now - startTime);
+            timeout -= stopWatch.Elapsed;
             if (timeout > TimeSpan.Zero)
             {
                 if (!_event.WaitOne(timeout))
@@ -88,7 +91,7 @@ public class AsyncLock
                     return false;
                 }
 
-                timeout -= (DateTime.Now - startTime);
+                timeout -= stopWatch.Elapsed;
             }
 
         } while (timeout > TimeSpan.Zero);
@@ -103,12 +106,12 @@ public class AsyncLock
             throw new InvalidOperationException("AsyncLock.Release = The lock is not currently being held");
         }
 
-        using (MutexHelper helper = new(_mutex))
         {
+            using var mutexHelper = new MutexHelper(_mutex);
             _lockIsHeld = false;
         }
 
-        // After we release the lock we can signal any other waiters
+        // After we release the lock we can signal all the other waiters so someone can get the lock
         _event.Set();
     }
 }
