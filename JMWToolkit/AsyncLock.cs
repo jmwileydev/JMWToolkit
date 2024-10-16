@@ -72,7 +72,7 @@ public class AsyncLock
     /// Waits the specified amount of time for the lock to be acquired.
     /// </summary>
     /// <param name="timeout">How long to wait for the lock before returning.</param>
-    /// <returns>True if lock is aquired, false if not.</returns>
+    /// <returns>True if lock is acquired, false if not.</returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public bool Wait(TimeSpan timeout)
     {
