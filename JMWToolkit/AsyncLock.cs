@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * Copyright (c) 2023, J.M. Wiley
+All rights reserved.
+
+This source code is licensed under the BSD-style license found in the
+LICENSE file in the root directory of this source tree. 
+*/
+using System;
 using System.Diagnostics;
 using System.Threading;
 
@@ -16,6 +23,10 @@ public class AsyncLock
     private bool _lockIsHeld = false;
     private readonly TimeSpan _infiniteWait = new(0, 0, 0, 0, -1);
 
+    /// <summary>
+    /// Initializes the AsyncLock class.
+    /// </summary>
+    /// <param name="initiallyLocked">Will acquire the lock if true.</param>
     public AsyncLock(bool initiallyLocked = false)
     {
         if (initiallyLocked)
@@ -24,6 +35,10 @@ public class AsyncLock
         }
     }
 
+    /// <summary>
+    /// Blocks the current thread until the lock becomes available.
+    /// </summary>
+    /// <returns>true if the lock is obtained and false if not.</returns>
     public bool Wait()
     {
         bool lockObtained = false;
@@ -49,9 +64,16 @@ public class AsyncLock
             // released.
             _ = _event.WaitOne();
         }
+
         return lockObtained;
     }
 
+    /// <summary>
+    /// Waits the specified amount of time for the lock to be acquired.
+    /// </summary>
+    /// <param name="timeout">How long to wait for the lock before returning.</param>
+    /// <returns>True if lock is aquired, false if not.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     public bool Wait(TimeSpan timeout)
     {
         // If it is an infinite wait just call our Wait() routine.
@@ -99,6 +121,10 @@ public class AsyncLock
         return false;
     }
 
+    /// <summary>
+    /// Releases the held lock.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">The lock is not currently being held.</exception>
     public void Release()
     {
         if (!_lockIsHeld)
