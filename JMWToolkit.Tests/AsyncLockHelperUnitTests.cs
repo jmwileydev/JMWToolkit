@@ -11,14 +11,9 @@ namespace JMWToolkit.Tests;
 [TestClass]
 public class AsyncLockHelperUnitTests
 {
-    public class AsyncLockData
+    public class AsyncLockData(AsyncLock asyncLock)
     {
-        public AsyncLockData(AsyncLock asyncLock)
-        {
-            AsyncLock = asyncLock;
-        }
-        
-        public AsyncLock AsyncLock { get; private set; }
+        public AsyncLock AsyncLock { get; private set; } = asyncLock;
         public bool CanLock { get; set; } = false;
         public Exception? CaughtException { get; set; } = null;
         public ManualResetEvent DoneEvent { get; } = new(false);
@@ -26,10 +21,7 @@ public class AsyncLockHelperUnitTests
 
     public static void TryAsyncLock(object? param)
     {
-        if (param == null)
-        {
-            throw new ArgumentNullException(nameof(param));
-        }
+        ArgumentNullException.ThrowIfNull(param);
 
         var data = (AsyncLockData)param;
 

@@ -10,23 +10,37 @@ using System.Threading;
 
 namespace JMWToolkit;
 
+/// <summary>
+/// Helper class for locking and releasing a SemaphoreSlim object.
+/// </summary>
 public class SemaphoreSlimHelper : IDisposable
 {
     private readonly SemaphoreSlim _semaphore;
     private bool _disposed = false;
 
+    /// <summary>
+    /// Initializes the SemaphoreSlimHelper.
+    /// </summary>
+    /// <param name="semaphore">The Semaphore to be managed.</param>
     public SemaphoreSlimHelper(SemaphoreSlim semaphore)
     {
         _semaphore = semaphore;
         _semaphore.Wait();
     }
 
+    /// <summary>
+    /// Releases the semaphore if owned.
+    /// </summary>
     public void Dispose()
     {
         Dispose(true);
         GC.SuppressFinalize(this);
     }
 
+    /// <summary>
+    /// Releases the semaphore if held.
+    /// </summary>
+    /// <param name="disposing"></param>
     protected virtual void Dispose(bool disposing)
     {
         if (!this._disposed)

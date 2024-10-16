@@ -14,24 +14,16 @@ public class AsyncLockUnitTests
 {
     private readonly static TimeSpan smallDelta = TimeSpan.FromMilliseconds(100);
 
-    public class TryAsyncLockData
+    public class TryAsyncLockData(AsyncLock asyncLock)
     {
-        public TryAsyncLockData(AsyncLock asyncLock)
-        {
-            AsyncLock = asyncLock;
-        }
-
-        public AsyncLock AsyncLock { get; private set; }
+        public AsyncLock AsyncLock { get; private set; } = asyncLock;
         public bool ObtainedLock { get; set; } = false;
         public ManualResetEvent DoneEvent { get; } = new(false);
     }
 
     public static void TryAsyncLock(object? obj)
     {
-        if (obj == null)
-        {
-            throw new ArgumentNullException(nameof(obj));
-        }
+        ArgumentNullException.ThrowIfNull(obj);
 
         TryAsyncLockData data = (TryAsyncLockData)obj;
         data.ObtainedLock = data.AsyncLock.Wait(new TimeSpan(0));
@@ -40,10 +32,7 @@ public class AsyncLockUnitTests
 
     public static void ReleaseAsyncLock(object? obj)
     {
-        if (obj == null)
-        {
-            throw new ArgumentNullException(nameof(obj));
-        }
+        ArgumentNullException.ThrowIfNull(obj);
 
         TryAsyncLockData data = (TryAsyncLockData)obj;
         data.AsyncLock.Release();

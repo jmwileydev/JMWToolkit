@@ -12,14 +12,9 @@ namespace JMWToolkit.Tests;
 [TestClass]
 public class MutexHelperUnitTests
 {
-    public class TryLockData
+    public class TryLockData(Mutex mutex)
     {
-        public TryLockData(Mutex mutex)
-        {
-            Mutex = mutex;
-        }
-
-        public Mutex Mutex { get; private set; }
+        public Mutex Mutex { get; private set; } = mutex;
         public bool CanLock { get; set; } = false;
         public Exception? CaughtException { get; set; } = null;
         public ManualResetEvent DoneEvent { get; } =  new(false);
@@ -27,10 +22,7 @@ public class MutexHelperUnitTests
 
     public static void TryLockMutex(object? param)
     {
-        if (param == null)
-        {
-            throw new ArgumentNullException(nameof(param));
-        }
+        ArgumentNullException.ThrowIfNull(param);
 
         var data = (TryLockData)param;
 
